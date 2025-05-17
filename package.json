@@ -1,0 +1,7 @@
+{
+  "name": "rekietalabs-shop",
+  "version": "1.0.0",
+  "dependencies": {
+    "stripe": "^12.7.0"
+  }
+}
