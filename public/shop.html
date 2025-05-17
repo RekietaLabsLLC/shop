@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RekietaLabs Market</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+    #payment-form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>RekietaLabs Market</h1>
+  <p>Click below to buy a sample product for $20</p>
+
+  <form id="payment-form">
+    <div id="payment-element"></div>
+    <button id="submit">Pay</button>
+    <div id="error-message"></div>
+  </form>
+
+  <script>
+    let stripe, elements;
+
+    async function initialize() {
+      const response = await fetch("/.netlify/functions/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: 2000 }) // $20.00
+      });
+      const { clientSecret } = await response.json();
+
+      stripe = Stripe("pk_test_51RPpkH4KcpOguZLucDVQ8OHWRrqZ0wohYf7pKLSiiTCDIoD7ZCnqu9l6QQCdW5torVeaMIOO1BVCG7qBNoTuysK300ZKLKrIXR"); // Replace with your pk_test_...
+      elements = stripe.elements();
+      const paymentElement = elements.create("payment");
+      paymentElement.mount("#payment-element");
+    }
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: { return_url: "https://shop.rekietalabs.com/orders/success" }
+      });
+      if (error) document.getElementById("error-message").textContent = error.message;
+    }
+
+    document.querySelector("#payment-form").addEventListener("submit", handleSubmit);
+
+    initialize();
+  </script>
+</body>
+</html>
