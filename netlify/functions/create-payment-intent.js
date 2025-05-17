@@ -1,29 +1,20 @@
+// functions/create-payment-intent.js
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
-  const { amount } = JSON.parse(event.body || '{}');
-
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [{
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: 'Sample Product',
-          },
-          unit_amount: amount || 1000,
-        },
-        quantity: 1,
-      }],
-      mode: 'payment',
-      success_url: 'https://shop.rekietalabs.com/success',
-      cancel_url: 'https://shop.rekietalabs.com/cancel',
+    const { amount } = JSON.parse(event.body);
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: 'usd',
+      automatic_payment_methods: { enabled: true },
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ id: session.id }),
+      body: JSON.stringify({ clientSecret: paymentIntent.client_secret }),
     };
   } catch (error) {
     return {
