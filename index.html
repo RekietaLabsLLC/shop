@@ -9,17 +9,17 @@
 
   :root {
     --rekieta-blue: #1753aa;
-    --stripe-purple: #635BFF;
-    --stripe-purple-dark: #3A32A3;
-    --text-light: #f0f4ff;
+    --text-color: #1753aa;
+    --background: #000000;
+    --text-light: #a3b8dd;
   }
 
   body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, var(--stripe-purple) 0%, var(--stripe-purple-dark) 100%);
+    background-color: var(--background);
     font-family: 'Inter', sans-serif;
-    color: var(--text-light);
+    color: var(--text-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -39,15 +39,17 @@
     font-weight: 600;
     font-size: 1.8rem;
     margin-bottom: 1em;
+    color: var(--text-color);
   }
 
   ul {
     text-align: left;
     max-width: 480px;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 3em;
+    color: var(--text-color);
   }
 
   ul li {
@@ -56,7 +58,7 @@
 
   footer {
     font-size: 1rem;
-    color: #c0c7ff;
+    color: var(--text-light);
     display: flex;
     align-items: center;
     gap: 10px;
