@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RekietaLabs Market</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-blue: #1753aa;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #0d0d0d;
+      color: #fff;
+    }
+
+    header {
+      background-color: #000;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--brand-blue);
+    }
+
+    header h1 {
+      color: var(--brand-blue);
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    .search-bar {
+      background: #1a1a1a;
+      border: 2px solid var(--brand-blue);
+      padding: 0.4rem 1rem;
+      border-radius: 5px;
+      color: #fff;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .product-card {
+      background-color: #1a1a1a;
+      border: 2px solid var(--brand-blue);
+      border-radius: 10px;
+      padding: 1rem;
+      width: 240px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(4px) scale(1.02);
+      box-shadow: 0 0 15px var(--brand-blue);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .product-card h2 {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .product-card p {
+      font-size: 0.95rem;
+    }
+
+    .product-card button {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 0.5rem;
+      background-color: var(--brand-blue);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #cart-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: relative;
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: red;
+      color: white;
+      font-size: 0.75rem;
+      border-radius: 50%;
+      padding: 2px 6px;
+    }
+
+    .cart-popup {
+      position: fixed;
+      right: -400px;
+      top: 0;
+      width: 350px;
+      height: 100vh;
+      background-color: #1a1a1a;
+      border-left: 2px solid var(--brand-blue);
+      color: white;
+      z-index: 9999;
+      padding: 1rem;
+      overflow-y: auto;
+      transition: right 0.3s ease;
+    }
+
+    .cart-popup.active {
+      right: 0;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-header h2 {
+      color: var(--brand-blue);
+    }
+
+    .cart-close {
+      cursor: pointer;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .cart-item {
+      border-bottom: 1px solid #333;
+      padding: 0.5rem 0;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .checkout-btn {
+      background-color: var(--brand-blue);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>RekietaLabs Market</h1>
+    <input class="search-bar" type="text" placeholder="Search products..." />
+    <button id="cart-button" onclick="toggleCart()">
+      🛒
+      <span id="cart-count">0</span>
+    </button>
+  </header>
+
+  <div class="product-list" id="products">
+    <!-- Products will be injected here -->
+  </div>
+
+  <div class="cart-popup" id="cart-popup">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <span class="cart-close" onclick="toggleCart()">×</span>
+    </div>
+    <div id="cart-items"></div>
+    <div id="cart-error" class="error-message"></div>
+    <button class="checkout-btn" onclick="checkout()">Checkout – $<span id="total-price">0.00</span></button>
+  </div>
+
+  <footer>
+    &copy; 2025 RekietaLabs. Powered by <span style="color:#635bff">Stripe</span>.
+  </footer>
+
+  <script>
+    const products = [
+      {
+        id: "wizard-dino",
+        name: "Wizard Dino",
+        image: "https://market.rekietalabs.com/IMG_0004.jpeg",
+        price: 3.00,
+        stripePriceId: "price_1RZdFXD69KEDp05GomdRWxNj"
+      },
+      {
+        id: "flower-fidget",
+        name: "Flower Fidget (GITD)",
+        image: "https://market.rekietalabs.com/IMG_0003-2.jpeg",
+        price: 8.00,
+        stripePriceId: "price_1RZcp5D69KEDp05GEnpthdIB"
+      },
+      {
+        id: "fidget-tree",
+        name: "Fidget Tree (Custom)",
+        image: "https://market.rekietalabs.com/IMG_0937.jpeg",
+        price: 8.00,
+        stripePriceId: "price_1RZcp6D69KEDp05GVcustomTree"
+      }
+    ];
+
+    let cart = [];
+
+    function renderProducts() {
+      const container = document.getElementById('products');
+      container.innerHTML = '';
+      products.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <img src="${prod.image}" alt="${prod.name}" />
+          <h2>${prod.name}</h2>
+          <p>$${prod.price.toFixed(2)}</p>
+          <button onclick="addToCart('${prod.id}')">Add to Cart</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      const exists = cart.find(item => item.id === id);
+      if (exists) {
+        exists.qty += 1;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <strong>${item.name}</strong><br>
+          Quantity: ${item.qty}<br>
+          <button onclick="removeFromCart('${item.id}')">Remove</button>
+        `;
+        cartItems.appendChild(div);
+      });
+
+      document.getElementById('total-price').textContent = total.toFixed(2);
+      document.getElementById('cart-count').textContent = cart.length;
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      updateCart();
+    }
+
+    function toggleCart() {
+      document.getElementById('cart-popup').classList.toggle('active');
+    }
+
+    async function checkout() {
+      if (cart.length === 0) {
+        document.getElementById('cart-error').textContent = "Cart is empty. Ref ID: 3400016";
+        return;
+      }
+
+      try {
+        const response = await fetch("https://api.rekietalabs.com/functions/market-session.js", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ cart })
+        });
+
+        const data = await response.json();
+
+        if (!data.url) {
+          document.getElementById('cart-error').textContent = "Could not get checkout link. Ref ID: 3400026";
+          return;
+        }
+
+        window.location.href = data.url;
+      } catch (err) {
+        document.getElementById('cart-error').textContent = "API failure. Ref ID: 3400036";
+      }
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
