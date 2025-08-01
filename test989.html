@@ -1,423 +1,301 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>RekietaLabs Market</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href="IMG_0926.jpeg" type="image/jpeg"/>
+  <title>RekietaLabs Market</title>
   <style>
-    :root {
-      --brand-blue: #1753aa;
-    }
-
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0d0d0d;
-      color: #fff;
+      background-color: black;
+      color: white;
+      margin: 0;
+      padding: 0;
     }
 
     header {
-      background-color: #000;
-      padding: 1rem;
+      background-color: #111;
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+      color: #1753aa;
+      font-weight: bold;
+    }
+
+    #searchBar {
+      margin: 10px auto;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--brand-blue);
+      justify-content: center;
     }
 
-    header h1 {
-      color: var(--brand-blue);
-      font-size: 1.5rem;
-      margin: 0;
+    #searchInput {
+      padding: 8px;
+      width: 80%;
+      max-width: 500px;
+      background-color: #222;
+      color: white;
+      border: 2px solid #1753aa;
+      border-radius: 4px;
     }
 
-    .search-bar {
-      background: #1a1a1a;
-      border: 2px solid var(--brand-blue);
-      padding: 0.4rem 1rem;
-      border-radius: 5px;
-      color: #bbb; /* light gray text */
-      outline: none;
-      font-size: 1rem;
-    }
-
-    .product-list {
+    #products {
       display: flex;
       flex-wrap: wrap;
-      gap: 1.5rem;
       justify-content: center;
-      padding: 2rem;
+      gap: 20px;
+      padding: 20px;
     }
 
-    .product-card {
-      background-color: #1a1a1a;
-      border: 2px solid var(--brand-blue);
-      border-radius: 10px;
-      padding: 1rem;
-      width: 240px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: default;
+    .product {
+      background-color: #222;
+      border-radius: 8px;
+      padding: 15px;
+      width: 250px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: background-color 0.3s;
     }
 
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 15px var(--brand-blue);
+    .product:hover {
+      background-color: #1e2d45;
     }
 
-    .product-card img {
-      width: 100%;
+    .product img {
+      max-width: 100%;
       height: auto;
-      border-radius: 5px;
+      border-radius: 4px;
     }
 
-    .product-card h2 {
-      margin-top: 0.5rem;
-      font-size: 1.2rem;
+    .product-title {
+      font-size: 18px;
+      margin: 10px 0;
     }
 
-    .product-card p {
-      font-size: 0.95rem;
+    .product-price {
+      color: #ccc;
+      margin-bottom: 10px;
     }
 
-    .product-card button {
-      margin-top: 0.5rem;
+    .product button {
+      background-color: #1753aa;
+      color: white;
+      border: none;
+      padding: 10px;
       width: 100%;
-      padding: 0.5rem;
-      background-color: var(--brand-blue);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
+      border-radius: 4px;
       cursor: pointer;
     }
 
-    #cart-button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      position: relative;
-    }
-
-    #cart-count {
-      position: absolute;
-      top: -8px;
-      right: -10px;
-      background: red;
-      color: white;
-      font-size: 0.75rem;
-      border-radius: 50%;
-      padding: 2px 6px;
-    }
-
-    .cart-popup {
+    #cartToggle {
       position: fixed;
-      right: -400px;
-      top: 0;
-      width: 350px;
-      height: 100vh;
-      background-color: #1a1a1a;
-      border-left: 2px solid var(--brand-blue);
+      bottom: 20px;
+      right: 20px;
+      background-color: #1753aa;
       color: white;
-      z-index: 9999;
-      padding: 1rem;
-      overflow-y: auto;
-      transition: right 0.3s ease;
-    }
-
-    .cart-popup.active {
-      right: 0;
-    }
-
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .cart-header h2 {
-      color: var(--brand-blue);
-    }
-
-    .cart-close {
-      cursor: pointer;
-      font-size: 1.3rem;
-      font-weight: bold;
-      background: none;
       border: none;
-      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    #cartPanel {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      width: 300px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 15px;
+      z-index: 1000;
     }
 
     .cart-item {
-      border-bottom: 1px solid #333;
-      padding: 0.5rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
-    .cart-item input[type="number"] {
-      width: 50px;
-      background: #222;
-      border: 1px solid var(--brand-blue);
-      border-radius: 4px;
+    .cart-item input {
+      background-color: #222;
+      border: 1px solid #555;
       color: white;
-      margin-top: 4px;
-    }
-
-    .error-message {
-      color: red;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
+      width: 50px;
       text-align: center;
+      border-radius: 4px;
     }
 
-    .checkout-btn {
-      background-color: var(--brand-blue);
+    .cart-item button {
+      background-color: #333;
       color: white;
       border: none;
-      width: 100%;
-      padding: 0.75rem;
-      border-radius: 5px;
-      font-size: 1rem;
-      margin-top: 1rem;
+      padding: 5px 10px;
+      border-radius: 4px;
       cursor: pointer;
     }
 
-    /* Dark-themed Remove button */
-    .remove-btn {
-      background-color: #222;
-      border: 1px solid var(--brand-blue);
+    #checkoutBtn {
+      background-color: #1753aa;
       color: white;
-      border-radius: 5px;
-      padding: 4px 8px;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 4px;
+      margin-top: 10px;
       cursor: pointer;
-      margin-top: 4px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      transition: background-color 0.2s ease;
-    }
-    .remove-btn:hover {
-      background-color: var(--brand-blue);
-      color: #fff;
     }
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      color: #999;
-    }
-
-    /* Blur background when cart is open */
-    body.cart-open {
-      overflow: hidden;
-    }
-
-    body.cart-open > *:not(.cart-popup) {
-      filter: blur(5px);
-      user-select: none;
-      pointer-events: none;
+    #errorMessage {
+      color: #ff6961;
+      font-size: 14px;
+      margin-top: 10px;
+      white-space: pre-wrap;
     }
 
     @media (max-width: 600px) {
-      .product-card {
+      #cartPanel {
+        width: 90%;
+        right: 5%;
+      }
+
+      #searchInput {
         width: 90%;
       }
 
-      .cart-popup {
-        width: 100vw;
-        right: -100vw;
-      }
-
-      .cart-popup.active {
-        right: 0;
+      .product {
+        width: 90%;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>RekietaLabs Market</h1>
-    <input class="search-bar" id="searchInput" type="text" placeholder="Search products..." autocomplete="off" />
-    <button id="cart-button" aria-label="Toggle Cart" onclick="toggleCart()">
-      🛒
-      <span id="cart-count">0</span>
-    </button>
-  </header>
 
-  <div class="product-list" id="product-list">
-    <!-- Product cards injected here -->
+  <header>RekietaLabs Market</header>
+
+  <div id="searchBar">
+    <input type="text" id="searchInput" placeholder="Search products..." />
   </div>
 
-  <div class="cart-popup" id="cart-popup" aria-label="Shopping Cart" role="region" aria-hidden="true">
-    <div class="cart-header">
-      <h2>Your Cart</h2>
-      <button class="cart-close" aria-label="Close Cart" onclick="toggleCart()">×</button>
-    </div>
-    <div id="cart-items"></div>
-    <div id="cart-error" class="error-message"></div>
-    <button class="checkout-btn" onclick="checkout()">Checkout – $<span id="total-price">0.00</span></button>
-  </div>
+  <div id="products"></div>
 
-  <footer>
-    &copy; 2025 RekietaLabs. Powered by <span style="color:#635bff">Stripe</span>.
-  </footer>
+  <button id="cartToggle">🛒</button>
+  <div id="cartPanel">
+    <div id="cartItems"></div>
+    <button id="checkoutBtn">Checkout</button>
+    <div id="errorMessage"></div>
+  </div>
 
   <script>
     const products = [
       {
         id: "wizard-dino",
         name: "Wizard Dino",
-        image: "https://market.rekietalabs.com/IMG_0004.jpeg",
         price: 3.00,
-        stripePriceId: "price_1RZdFXD69KEDp05GomdRWxNj"
+        image: "https://market.rekietalabs.com/IMG_0004.jpeg"
       },
       {
         id: "flower-fidget",
         name: "Flower Fidget (GITD)",
-        image: "https://market.rekietalabs.com/IMG_0003-2.jpeg",
         price: 8.00,
-        stripePriceId: "price_1RZcp5D69KEDp05GEnpthdIB"
+        image: "https://market.rekietalabs.com/IMG_0003-2.jpeg"
       },
       {
         id: "fidget-tree",
         name: "Fidget Tree (Custom)",
-        image: "https://market.rekietalabs.com/IMG_0937.jpeg",
         price: 8.00,
-        stripePriceId: "price_1RZcp6D69KEDp05GVcustomTree"
+        image: "https://market.rekietalabs.com/IMG_0937.jpeg"
       }
     ];
 
-    let cart = [];
+    const cart = {};
 
-    function renderProducts(filter = "") {
-      const container = document.getElementById("product-list");
-      container.innerHTML = "";
-      const filteredProducts = products.filter(p =>
-        p.name.toLowerCase().includes(filter.toLowerCase())
-      );
-
-      filteredProducts.forEach(prod => {
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.innerHTML = `
-          <img src="${prod.image}" alt="${prod.name}" />
-          <h2>${prod.name}</h2>
-          <p>$${prod.price.toFixed(2)}</p>
-          <button onclick="addToCart('${prod.id}')">Add to Cart</button>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function addToCart(id) {
-      const product = products.find(p => p.id === id);
-      if (!product) return;
-
-      const cartItem = cart.find(item => item.id === id);
-      if (cartItem) {
-        cartItem.qty++;
-      } else {
-        cart.push({ ...product, qty: 1 });
-      }
-      updateCart();
-    }
+    const productsContainer = document.getElementById('products');
+    const cartPanel = document.getElementById('cartPanel');
+    const cartToggle = document.getElementById('cartToggle');
+    const cartItems = document.getElementById('cartItems');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const errorMessage = document.getElementById('errorMessage');
+    const searchInput = document.getElementById('searchInput');
 
     function updateCart() {
-      const cartItems = document.getElementById("cart-items");
-      cartItems.innerHTML = "";
-      let total = 0;
-
-      cart.forEach(item => {
-        total += item.price * item.qty;
-
-        let itemHTML = `
-          <div class="cart-item">
-            <strong>${item.name}</strong><br>
-            Quantity: <input type="number" min="1" max="30" value="${item.qty}" onchange="changeQty('${item.id}', this.value)" />
-            <br>
-            <button class="remove-btn" onclick="removeFromCart('${item.id}')">Remove</button>
-          </div>
+      cartItems.innerHTML = '';
+      for (const [id, qty] of Object.entries(cart)) {
+        const product = products.find(p => p.id === id);
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <span>${product.name}</span>
+          <input type="number" value="${qty}" min="1" max="30" onchange="cart['${id}'] = parseInt(this.value) || 1">
+          <button onclick="delete cart['${id}']; updateCart()">Remove</button>
         `;
-
-        cartItems.insertAdjacentHTML("beforeend", itemHTML);
-      });
-
-      document.getElementById("total-price").textContent = total.toFixed(2);
-      document.getElementById("cart-count").textContent = cart.reduce((sum, i) => sum + i.qty, 0);
-    }
-
-    function changeQty(id, qty) {
-      qty = parseInt(qty);
-      if (qty < 1) qty = 1;
-      if (qty > 30) qty = 30;
-
-      const item = cart.find(i => i.id === id);
-      if (!item) return;
-
-      item.qty = qty;
-      updateCart();
-    }
-
-    function removeFromCart(id) {
-      cart = cart.filter(i => i.id !== id);
-      updateCart();
-    }
-
-    function toggleCart() {
-      const popup = document.getElementById("cart-popup");
-      const body = document.body;
-      popup.classList.toggle("active");
-      if (popup.classList.contains("active")) {
-        popup.setAttribute("aria-hidden", "false");
-        body.classList.add("cart-open");
-      } else {
-        popup.setAttribute("aria-hidden", "true");
-        body.classList.remove("cart-open");
+        cartItems.appendChild(div);
       }
     }
 
-    async function checkout() {
-      const cartError = document.getElementById("cart-error");
-      cartError.textContent = "";
+    function displayError(msg, refId) {
+      errorMessage.textContent = `${msg} (Ref ID: ${refId})`;
+    }
 
-      if (cart.length === 0) {
-        cartError.textContent = "Cart is empty. Ref ID: 3400016";
-        return;
+    cartToggle.onclick = () => {
+      cartPanel.style.display = cartPanel.style.display === 'block' ? 'none' : 'block';
+      updateCart();
+      errorMessage.textContent = '';
+    };
+
+    checkoutBtn.onclick = async () => {
+      errorMessage.textContent = '';
+
+      const cartArray = Object.entries(cart).map(([id, qty]) => ({ id, qty }));
+      if (cartArray.length === 0) {
+        return displayError("Your cart is empty.", "3400116");
       }
-
-      // Payload: just ids and qty since no color selection anymore
-      const payloadCart = cart.map(item => ({
-        id: item.id,
-        qty: item.qty
-      }));
 
       try {
         const response = await fetch("https://api.rekietalabs.com/market-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cart: payloadCart })
+          body: JSON.stringify({ cart: cartArray })
         });
 
         const data = await response.json();
 
-        if (!data.url) {
-          cartError.textContent = "Could not get checkout link. Ref ID: 3400026";
-          return;
+        if (response.ok && data.url) {
+          window.location.href = data.url;
+        } else {
+          displayError(data.error || "Checkout failed.", data.refId || "3400126");
         }
-
-        window.location.href = data.url;
-      } catch {
-        cartError.textContent = "API failure. Ref ID: 3400036";
+      } catch (err) {
+        displayError("Network error. Please try again later.", "3400136");
       }
+    };
+
+    function renderProducts() {
+      const query = searchInput.value.toLowerCase();
+      productsContainer.innerHTML = '';
+
+      products
+        .filter(p => p.name.toLowerCase().includes(query))
+        .forEach(product => {
+          const div = document.createElement('div');
+          div.className = 'product';
+          div.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" />
+            <div class="product-title">${product.name}</div>
+            <div class="product-price">$${product.price.toFixed(2)}</div>
+            <button onclick="cart['${product.id}'] = (cart['${product.id}'] || 0) + 1; updateCart()">Add to Cart</button>
+          `;
+          productsContainer.appendChild(div);
+        });
     }
 
-    document.getElementById("searchInput").addEventListener("input", e => {
-      renderProducts(e.target.value);
-    });
-
-    // Initial render
-    renderProducts();
-    updateCart();
+    searchInput.addEventListener('input', renderProducts);
+    window.addEventListener('load', renderProducts);
   </script>
 </body>
 </html>
