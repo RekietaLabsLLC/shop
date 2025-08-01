@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <title>RekietaLabs Market</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet" />
-  <link rel="icon" href="IMG_0926.jpeg" type="image/jpeg" />
   <style>
     :root {
       --brand-blue: #1753aa;
@@ -13,7 +11,7 @@
 
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       background-color: #0d0d0d;
       color: #fff;
     }
@@ -38,7 +36,7 @@
       border: 2px solid var(--brand-blue);
       padding: 0.4rem 1rem;
       border-radius: 5px;
-      color: #fff;
+      color: #bbb; /* light gray text */
       outline: none;
       font-size: 1rem;
     }
@@ -57,11 +55,12 @@
       border-radius: 10px;
       padding: 1rem;
       width: 240px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
     }
 
     .product-card:hover {
-      transform: translateY(4px) scale(1.02);
+      transform: translateY(-5px);
       box-shadow: 0 0 15px var(--brand-blue);
     }
 
@@ -145,6 +144,9 @@
       cursor: pointer;
       font-size: 1.3rem;
       font-weight: bold;
+      background: none;
+      border: none;
+      color: white;
     }
 
     .cart-item {
@@ -152,10 +154,20 @@
       padding: 0.5rem 0;
     }
 
+    .cart-item input[type="number"] {
+      width: 50px;
+      background: #222;
+      border: 1px solid var(--brand-blue);
+      border-radius: 4px;
+      color: white;
+      margin-top: 4px;
+    }
+
     .error-message {
       color: red;
       font-size: 0.9rem;
       margin-top: 0.5rem;
+      text-align: center;
     }
 
     .checkout-btn {
@@ -170,31 +182,75 @@
       cursor: pointer;
     }
 
+    /* Dark-themed Remove button */
+    .remove-btn {
+      background-color: #222;
+      border: 1px solid var(--brand-blue);
+      color: white;
+      border-radius: 5px;
+      padding: 4px 8px;
+      cursor: pointer;
+      margin-top: 4px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background-color 0.2s ease;
+    }
+    .remove-btn:hover {
+      background-color: var(--brand-blue);
+      color: #fff;
+    }
+
     footer {
       text-align: center;
       padding: 1rem;
       color: #999;
+    }
+
+    /* Blur background when cart is open */
+    body.cart-open {
+      overflow: hidden;
+    }
+
+    body.cart-open > *:not(.cart-popup) {
+      filter: blur(5px);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @media (max-width: 600px) {
+      .product-card {
+        width: 90%;
+      }
+
+      .cart-popup {
+        width: 100vw;
+        right: -100vw;
+      }
+
+      .cart-popup.active {
+        right: 0;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>RekietaLabs Market</h1>
-    <input class="search-bar" type="text" placeholder="Search products..." />
-    <button id="cart-button" onclick="toggleCart()">
+    <input class="search-bar" id="searchInput" type="text" placeholder="Search products..." autocomplete="off" />
+    <button id="cart-button" aria-label="Toggle Cart" onclick="toggleCart()">
       🛒
       <span id="cart-count">0</span>
     </button>
   </header>
 
-  <div class="product-list" id="products">
-    <!-- Products will be injected here -->
+  <div class="product-list" id="product-list">
+    <!-- Product cards injected here -->
   </div>
 
-  <div class="cart-popup" id="cart-popup">
+  <div class="cart-popup" id="cart-popup" aria-label="Shopping Cart" role="region" aria-hidden="true">
     <div class="cart-header">
       <h2>Your Cart</h2>
-      <span class="cart-close" onclick="toggleCart()">×</span>
+      <button class="cart-close" aria-label="Close Cart" onclick="toggleCart()">×</button>
     </div>
     <div id="cart-items"></div>
     <div id="cart-error" class="error-message"></div>
@@ -232,12 +288,16 @@
 
     let cart = [];
 
-    function renderProducts() {
-      const container = document.getElementById('products');
-      container.innerHTML = '';
-      products.forEach(prod => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
+    function renderProducts(filter = "") {
+      const container = document.getElementById("product-list");
+      container.innerHTML = "";
+      const filteredProducts = products.filter(p =>
+        p.name.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      filteredProducts.forEach(prod => {
+        const card = document.createElement("div");
+        card.className = "product-card";
         card.innerHTML = `
           <img src="${prod.image}" alt="${prod.name}" />
           <h2>${prod.name}</h2>
@@ -250,9 +310,11 @@
 
     function addToCart(id) {
       const product = products.find(p => p.id === id);
-      const exists = cart.find(item => item.id === id);
-      if (exists) {
-        exists.qty += 1;
+      if (!product) return;
+
+      const cartItem = cart.find(item => item.id === id);
+      if (cartItem) {
+        cartItem.qty++;
       } else {
         cart.push({ ...product, qty: 1 });
       }
@@ -260,64 +322,101 @@
     }
 
     function updateCart() {
-      const cartItems = document.getElementById('cart-items');
-      cartItems.innerHTML = '';
+      const cartItems = document.getElementById("cart-items");
+      cartItems.innerHTML = "";
       let total = 0;
 
       cart.forEach(item => {
         total += item.price * item.qty;
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `
-          <strong>${item.name}</strong><br>
-          Quantity: ${item.qty}<br>
-          <button onclick="removeFromCart('${item.id}')">Remove</button>
+
+        let itemHTML = `
+          <div class="cart-item">
+            <strong>${item.name}</strong><br>
+            Quantity: <input type="number" min="1" max="30" value="${item.qty}" onchange="changeQty('${item.id}', this.value)" />
+            <br>
+            <button class="remove-btn" onclick="removeFromCart('${item.id}')">Remove</button>
+          </div>
         `;
-        cartItems.appendChild(div);
+
+        cartItems.insertAdjacentHTML("beforeend", itemHTML);
       });
 
-      document.getElementById('total-price').textContent = total.toFixed(2);
-      document.getElementById('cart-count').textContent = cart.length;
+      document.getElementById("total-price").textContent = total.toFixed(2);
+      document.getElementById("cart-count").textContent = cart.reduce((sum, i) => sum + i.qty, 0);
+    }
+
+    function changeQty(id, qty) {
+      qty = parseInt(qty);
+      if (qty < 1) qty = 1;
+      if (qty > 30) qty = 30;
+
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+
+      item.qty = qty;
+      updateCart();
     }
 
     function removeFromCart(id) {
-      cart = cart.filter(item => item.id !== id);
+      cart = cart.filter(i => i.id !== id);
       updateCart();
     }
 
     function toggleCart() {
-      document.getElementById('cart-popup').classList.toggle('active');
+      const popup = document.getElementById("cart-popup");
+      const body = document.body;
+      popup.classList.toggle("active");
+      if (popup.classList.contains("active")) {
+        popup.setAttribute("aria-hidden", "false");
+        body.classList.add("cart-open");
+      } else {
+        popup.setAttribute("aria-hidden", "true");
+        body.classList.remove("cart-open");
+      }
     }
 
     async function checkout() {
+      const cartError = document.getElementById("cart-error");
+      cartError.textContent = "";
+
       if (cart.length === 0) {
-        document.getElementById('cart-error').textContent = "Cart is empty. Ref ID: 3400016";
+        cartError.textContent = "Cart is empty. Ref ID: 3400016";
         return;
       }
+
+      // Payload: just ids and qty since no color selection anymore
+      const payloadCart = cart.map(item => ({
+        id: item.id,
+        qty: item.qty
+      }));
 
       try {
         const response = await fetch("https://api.rekietalabs.com/market-session", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ cart })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cart: payloadCart })
         });
 
         const data = await response.json();
 
         if (!data.url) {
-          document.getElementById('cart-error').textContent = "Could not get checkout link. Ref ID: 3400026";
+          cartError.textContent = "Could not get checkout link. Ref ID: 3400026";
           return;
         }
 
         window.location.href = data.url;
-      } catch (err) {
-        document.getElementById('cart-error').textContent = "API failure. Ref ID: 3400036";
+      } catch {
+        cartError.textContent = "API failure. Ref ID: 3400036";
       }
     }
 
+    document.getElementById("searchInput").addEventListener("input", e => {
+      renderProducts(e.target.value);
+    });
+
+    // Initial render
     renderProducts();
+    updateCart();
   </script>
 </body>
 </html>
