@@ -16,11 +16,29 @@
 
     header {
       background-color: #111;
-      padding: 10px;
-      text-align: center;
+      padding: 10px 20px;
       font-size: 24px;
       color: #1753aa;
       font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #portalBtn {
+      background-color: #1753aa;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+    }
+
+    #portalBtn:hover {
+      background-color: #0f3d82;
     }
 
     #searchBar {
@@ -189,7 +207,10 @@
 </head>
 <body>
 
-  <header>RekietaLabs Market</header>
+  <header>
+    RekietaLabs Market
+    <a id="portalBtn" href="https://billing.stripe.com/p/login/fZu5kCbIfd9mbKbdNi0x200" target="_blank">Visit Customer Portal</a>
+  </header>
 
   <div id="searchBar">
     <input type="text" id="searchInput" placeholder="Search products..." />
