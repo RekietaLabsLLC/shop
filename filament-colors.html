@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RekietaLabs Market — Filament Colors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1: #0b0c0e;
+    --bg-2: #0f1317;
+    --panel: #0f1418;
+    --muted: #9aa3af;
+    --brand: #1753aa; /* RekietaLabs blue */
+    --tag-green: #2ecc71;
+    --glass: rgba(255,255,255,0.03);
+    --card-radius: 14px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(23,83,170,0.06), transparent),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:48px 24px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+  }
+
+  .container{
+    width:1100px;
+    max-width:96%;
+    margin:0 auto;
+  }
+
+  /* Header */
+  header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:28px;
+  }
+  .brand{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  h1{
+    margin:0;
+    font-size:28px;
+    letter-spacing:0.2px;
+    font-weight:800;
+    color:var(--brand);
+    background: linear-gradient(90deg, rgba(23,83,170,0.9), rgba(125,180,255,0.7));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter:drop-shadow(0 8px 24px rgba(23,83,170,0.08));
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  /* card / gallery */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:14px;
+  }
+
+  .color-card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.03);
+    padding:14px;
+    border-radius:var(--card-radius);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-height:72px;
+    transition:transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s;
+  }
+  .color-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 10px 30px rgba(2,6,23,0.6);
+  }
+
+  .swatch{
+    width:72px;
+    height:56px;
+    border-radius:8px;
+    flex-shrink:0;
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: inset 0 -6px 20px rgba(0,0,0,0.6);
+  }
+
+  /* text area */
+  .meta{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex:1;
+  }
+  .name{
+    font-weight:700;
+    font-size:16px;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .hint{
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  /* status tag */
+  .tag{
+    padding:6px 10px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:12px;
+    display:inline-block;
+    letter-spacing:0.3px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+    color:#05220a;
+  }
+
+  /* --- animated gradient text styles for colored names --- */
+  .gtext{
+    background-clip:text;
+    -webkit-background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+    animation: shimmer 4s linear infinite;
+    -webkit-animation: shimmer 4s linear infinite;
+    white-space:nowrap;
+    display:inline-block;
+    text-shadow: 0 2px 22px rgba(0,0,0,0.45);
+    /* ensure readability with faint outline */
+    filter:drop-shadow(0 6px 14px rgba(0,0,0,0.55));
+  }
+
+  @keyframes shimmer {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+
+  /* Concrete color definitions (swatches + matching gradient/text) */
+  /* 1 Bright Green-Blue Gradient */
+  .c1 .swatch{background:linear-gradient(135deg,#00ffa3,#00d4ff);}
+  .c1 .gtext{background:linear-gradient(90deg,#00ffa3,#00d4ff);}
+
+  /* 2 Pink */
+  .c2 .swatch{background:linear-gradient(180deg,#ff86c6,#ff66aa);}
+  .c2 .gtext{background:linear-gradient(90deg,#ff86c6,#ff66aa);}
+
+  /* 3 Glow in the Dark (Glows Blue) */
+  .c3 .swatch{
+    background: linear-gradient(180deg,#0b2b1f,#b6ffd9);
+    box-shadow: 0 8px 36px rgba(40,200,255,0.14), inset 0 -10px 40px rgba(0,0,0,0.4);
+  }
+  .c3 .gtext{
+    background: linear-gradient(90deg,#b6ffd9, #7ef0ff);
+    text-shadow: 0 0 18px rgba(126,240,255,0.9), 0 0 32px rgba(126,240,255,0.45);
+    animation: shimmer 3.6s linear infinite;
+  }
+
+  /* 4 Carbon Fiber Black (Up-charge) */
+  .c4 .swatch{
+    /* subtle carbon-fiber diagonal lines */
+    background:
+      repeating-linear-gradient(135deg, #1a1a1a 0 4px, #111111 4px 8px),
+      linear-gradient(180deg,#151515,#0f0f0f);
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: inset 0 -6px 20px rgba(0,0,0,0.7);
+  }
+  .c4 .gtext{
+    /* carbon text: near-black but with a bright metallic edge for visibility */
+    background: linear-gradient(90deg,#2f2f2f,#9fa6b0);
+    color:transparent;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.6), 0 6px 22px rgba(23,83,170,0.06);
+    animation:none;
+    -webkit-background-clip:text;
+    background-clip:text;
+  }
+
+  /* 5 Purple-Pink Gradient */
+  .c5 .swatch{background:linear-gradient(135deg,#8a2be2,#ff6ec7);}
+  .c5 .gtext{background:linear-gradient(90deg,#8a2be2,#ff6ec7);}
+
+  /* 6 Yellow-Purple Gradient */
+  .c6 .swatch{background:linear-gradient(135deg,#ffd24d,#8a2be2);}
+  .c6 .gtext{background:linear-gradient(90deg,#ffd24d,#8a2be2);}
+
+  /* 7 Blue */
+  .c7 .swatch{background:linear-gradient(180deg,#2b6cff,#1753aa);}
+  .c7 .gtext{background:linear-gradient(90deg,#2b6cff,#1753aa);}
+
+  /* 8 Yellow */
+  .c8 .swatch{background:linear-gradient(180deg,#ffd83b,#ffce2b);}
+  .c8 .gtext{background:linear-gradient(90deg,#ffd83b,#ffce2b); color:transparent;}
+
+  /* 9 Green */
+  .c9 .swatch{background:linear-gradient(180deg,#00c853,#00a14a);}
+  .c9 .gtext{background:linear-gradient(90deg,#00c853,#00a14a);}
+
+  /* 10 Green-Pink Gradient */
+  .c10 .swatch{background:linear-gradient(135deg,#00c853,#ff66aa);}
+  .c10 .gtext{background:linear-gradient(90deg,#00c853,#ff66aa);}
+
+  /* 11 White */
+  .c11 .swatch{background:linear-gradient(180deg,#ffffff,#e6e6e6); border:1px solid rgba(0,0,0,0.08);}
+  .c11 .gtext{
+    background:linear-gradient(90deg,#ffffff,#d8eaff);
+    -webkit-text-stroke: 0.4px rgba(0,0,0,0.25);
+  }
+
+  /* 12 Darkish Green-Blue Gradient */
+  .c12 .swatch{background:linear-gradient(135deg,#006064,#00796b);}
+  .c12 .gtext{background:linear-gradient(90deg,#00796b,#00b4c8);}
+
+  /* 13 Red */
+  .c13 .swatch{background:linear-gradient(180deg,#ff3b3b,#d91f2b);}
+  .c13 .gtext{background:linear-gradient(90deg,#ff3b3b,#d91f2b);}
+
+  /* make sure backgrounds for gtext are sized for animation */
+  .gtext{background-size:250% 100%}
+
+  /* tag color (all In-Stock) */
+  .tag.in-stock{background:linear-gradient(90deg,var(--tag-green),#1fbf4f); color:#04260f;}
+
+  /* small helpers */
+  .upcharge{font-size:12px;color:var(--muted);font-weight:600;margin-left:6px}
+  .row{display:flex;align-items:center;gap:12px}
+
+  /* responsive */
+  @media (max-width:780px){
+    .grid{grid-template-columns:1fr;gap:12px}
+    header{flex-direction:column;align-items:flex-start;gap:8px}
+    .swatch{width:64px;height:48px}
+  }
+
+</style>
+</head>
+<body>
+  <main class="container" role="main" aria-label="RekietaLabs Market Filament Colors">
+    <header>
+      <div class="brand">
+        <h1>RekietaLabs Market — Filament Colors</h1>
+        <div class="subtitle">All available filaments — names styled to match each filament. Status: <strong style="color:var(--tag-green)">In-Stock</strong></div>
+      </div>
+    </header>
+
+    <section class="grid" aria-live="polite">
+      <!-- 1 Bright Green-Blue Gradient -->
+      <article class="color-card c1" aria-labelledby="c1name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c1name" class="name">
+              <span class="gtext">Bright Green-Blue Gradient</span>
+              <span class="upcharge" aria-hidden="true"> </span>
+            </div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Perfect for high-visibility prints, animated text glow.</div>
+        </div>
+      </article>
+
+      <!-- 2 Pink -->
+      <article class="color-card c2" aria-labelledby="c2name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c2name" class="name"><span class="gtext">Pink</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Soft to bright pink tones for fun builds.</div>
+        </div>
+      </article>
+
+      <!-- 3 Glow in the Dark (Glows Blue) -->
+      <article class="color-card c3" aria-labelledby="c3name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c3name" class="name"><span class="gtext">Glow in the Dark (Glows Blue)</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Charges under light, emits a blue glow in darkness.</div>
+        </div>
+      </article>
+
+      <!-- 4 Carbon Fiber Black (Up-charge) -->
+      <article class="color-card c4" aria-labelledby="c4name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c4name" class="name">
+              <span class="gtext">Carbon Fiber Black</span>
+              <span class="upcharge">(Up-charge)</span>
+            </div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Premium textured finish — ideal for high-end parts.</div>
+        </div>
+      </article>
+
+      <!-- 5 Purple-Pink Gradient -->
+      <article class="color-card c5" aria-labelledby="c5name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c5name" class="name"><span class="gtext">Purple-Pink Gradient</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Smooth blend—great for decorative models.</div>
+        </div>
+      </article>
+
+      <!-- 6 Yellow-Purple Gradient -->
+      <article class="color-card c6" aria-labelledby="c6name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c6name" class="name"><span class="gtext">Yellow-Purple Gradient</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Bold contrast — eye-catching results.</div>
+        </div>
+      </article>
+
+      <!-- 7 Blue -->
+      <article class="color-card c7" aria-labelledby="c7name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c7name" class="name"><span class="gtext">Blue</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Classic RekietaLabs blue tones available.</div>
+        </div>
+      </article>
+
+      <!-- 8 Yellow -->
+      <article class="color-card c8" aria-labelledby="c8name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c8name" class="name"><span class="gtext">Yellow</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">High-visibility filament for accents and highlights.</div>
+        </div>
+      </article>
+
+      <!-- 9 Green -->
+      <article class="color-card c9" aria-labelledby="c9name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c9name" class="name"><span class="gtext">Green</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Fresh greens for nature-themed models.</div>
+        </div>
+      </article>
+
+      <!-- 10 Green-Pink Gradient -->
+      <article class="color-card c10" aria-labelledby="c10name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c10name" class="name"><span class="gtext">Green-Pink Gradient</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Unique gradient for playful pieces.</div>
+        </div>
+      </article>
+
+      <!-- 11 White -->
+      <article class="color-card c11" aria-labelledby="c11name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c11name" class="name"><span class="gtext">White</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Neutral, great for priming or painting.</div>
+        </div>
+      </article>
+
+      <!-- 12 Darkish Green-Blue Gradient -->
+      <article class="color-card c12" aria-labelledby="c12name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c12name" class="name"><span class="gtext">Darkish Green-Blue Gradient</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Deeper tones for professional prints.</div>
+        </div>
+      </article>
+
+      <!-- 13 Red -->
+      <article class="color-card c13" aria-labelledby="c13name">
+        <div class="swatch" aria-hidden="true"></div>
+        <div class="meta">
+          <div class="row">
+            <div id="c13name" class="name"><span class="gtext">Red</span></div>
+            <div class="tag in-stock" role="status">In-Stock</div>
+          </div>
+          <div class="hint">Bold red for standout parts.</div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
