@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RekietaLabs Market</title>
+<link rel="icon" href="IMG_0926.jpeg" type="image/jpeg"/>
+<style>
+  :root {
+    --brand-color: #1753aa;
+    --bg-color: #0b0b0b;
+    --card-bg: #1c1c1c;
+    --hover-bg: #1e2d45;
+    --text-color: white;
+    --subtext-color: #ccc;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  header {
+    background-color: #111;
+    padding: 15px 25px;
+    font-size: 24px;
+    color: var(--brand-color);
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  #portalBtn {
+    background-color: var(--brand-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
+  #portalBtn:hover {
+    background-color: #0f3d82;
+  }
+
+  #searchBar {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  #searchInput {
+    padding: 10px;
+    width: 80%;
+    max-width: 500px;
+    background-color: #222;
+    color: white;
+    border: 2px solid var(--brand-color);
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  section {
+    padding: 30px 20px;
+  }
+
+  h2 {
+    color: var(--brand-color);
+    margin-bottom: 20px;
+    font-size: 28px;
+  }
+
+  .products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .product-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 15px;
+    width: 240px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s, background-color 0.3s;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .product-card:hover {
+    background-color: var(--hover-bg);
+    transform: translateY(-5px);
+  }
+
+  .product-card img {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+
+  .product-name {
+    font-size: 18px;
+    margin: 8px 0;
+  }
+
+  .product-price {
+    color: var(--subtext-color);
+    margin-bottom: 10px;
+  }
+
+  /* Cart Styles */
+  #cartToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--brand-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  #cartPanel {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background-color: #111;
+    border: 1px solid #333;
+    border-radius: 8px;
+    width: 320px;
+    max-height: 450px;
+    overflow-y: auto;
+    padding: 15px;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+  }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .cart-item input {
+    background-color: #222;
+    border: 1px solid #555;
+    color: white;
+    width: 50px;
+    text-align: center;
+    border-radius: 4px;
+  }
+
+  .cart-item button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #checkoutBtn {
+    background-color: var(--brand-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #errorMessage {
+    color: #ff6961;
+    font-size: 14px;
+    margin-top: 10px;
+    white-space: pre-wrap;
+  }
+
+  @media (max-width: 600px) {
+    #cartPanel { width: 90%; right: 5%; }
+    #searchInput { width: 90%; }
+    .product-card { width: 90%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  RekietaLabs Market
+  <a id="portalBtn" href="/catalog.html" target="_self">Browse Catalog</a>
+</header>
+
+<div id="searchBar">
+  <input type="text" id="searchInput" placeholder="Search products..." />
+</div>
+
+<section>
+  <h2>Deals & Specials</h2>
+  <div class="products-grid" id="dealsGrid"></div>
+</section>
+
+<section>
+  <h2>New Items</h2>
+  <div class="products-grid" id="newItemsGrid"></div>
+</section>
+
+<button id="cartToggle">🛒</button>
+<div id="cartPanel">
+  <div id="cartItems"></div>
+  <button id="checkoutBtn">Checkout</button>
+  <div id="errorMessage"></div>
+</div>
+
+<script>
+const products = [
+  { id: "pumpkin-dino", name: "Pumpkin Dino", price: 3.00, image: "https://market.rekietalabs.com/IMG_0202.png", category: "deals", url: "/products/pumpkin-dino.html" },
+  { id: "sting-ray", name: "Sting Ray", price: 3.00, image: "https://market.rekietalabs.com/IMG_1171.jpeg", category: "deals", url: "/products/sting-ray.html" },
+  { id: "fidget-tree", name: "Fidget Tree", price: 8.00, image: "https://market.rekietalabs.com/IMG_0937.jpeg", category: "new", url: "/products/fidget-tree.html" },
+  { id: "flower-fidget-a", name: "Flower Fidget (GITD)", price: 8.00, image: "https://market.rekietalabs.com/IMG_0003-2.jpeg", category: "new", url: "/products/flower-fidget-a.html" },
+];
+
+const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+
+const dealsGrid = document.getElementById('dealsGrid');
+const newItemsGrid = document.getElementById('newItemsGrid');
+const cartPanel = document.getElementById('cartPanel');
+const cartToggle = document.getElementById('cartToggle');
+const cartItems = document.getElementById('cartItems');
+const checkoutBtn = document.getElementById('checkoutBtn');
+const errorMessage = document.getElementById('errorMessage');
+const searchInput = document.getElementById('searchInput');
+
+function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
+
+function renderProducts(grid, category) {
+  grid.innerHTML = '';
+  const query = searchInput.value.toLowerCase();
+  products.filter(p => p.category === category && p.name.toLowerCase().includes(query))
+          .forEach(product => {
+    const div = document.createElement('div');
+    div.className = 'product-card';
+    div.onclick = () => { window.location.href = product.url; };
+    div.innerHTML = `
+      <img src="${product.image}" alt="${product.name}" />
+      <div class="product-name">${product.name}</div>
+      <div class="product-price">$${product.price.toFixed(2)}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function updateCart() {
+  cartItems.innerHTML = '';
+  for (const [id, qty] of Object.entries(cart)) {
+    const product = products.find(p => p.id === id);
+    if (!product) continue;
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <span>${product.name}</span>
+      <input type="number" value="${qty}" min="1" max="30" onchange="cart['${id}']=parseInt(this.value)||1; saveCart(); updateCart();">
+      <button onclick="delete cart['${id}']; saveCart(); updateCart();">Remove</button>
+    `;
+    cartItems.appendChild(div);
+  }
+}
+
+cartToggle.onclick = () => {
+  cartPanel.style.display = cartPanel.style.display === 'block' ? 'none' : 'block';
+  updateCart();
+  errorMessage.textContent = '';
+};
+
+checkoutBtn.onclick = async () => {
+  errorMessage.textContent = '';
+  const cartArray = Object.entries(cart).map(([id, qty]) => ({ id, qty }));
+  if (cartArray.length === 0) return errorMessage.textContent = "Your cart is empty (Ref ID: 3400116)";
+  try {
+    const res = await fetch("https://api.rekietalabs.com/market-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cart: cartArray })
+    });
+    const data = await res.json();
+    if (res.ok && data.url) window.location.href = data.url;
+    else errorMessage.textContent = (data.error || "Checkout failed") + " (Ref ID: " + (data.refId || "3400126") + ")";
+  } catch(e) {
+    errorMessage.textContent = "Network error. Please try again later (Ref ID: 3400136)";
+  }
+};
+
+searchInput.addEventListener('input', () => {
+  renderProducts(dealsGrid, 'deals');
+  renderProducts(newItemsGrid, 'new');
+});
+
+window.addEventListener('load', () => {
+  renderProducts(dealsGrid, 'deals');
+  renderProducts(newItemsGrid, 'new');
+});
+</script>
+
+</body>
+</html>
