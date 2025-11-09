@@ -1,323 +1,617 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RekietaLabs Market</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RekietaLabs Market — Home</title>
 <link rel="icon" href="IMG_0926.jpeg" type="image/jpeg"/>
+<!-- Optional: modern web font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --brand-color: #1753aa;
-    --bg-color: #0b0b0b;
-    --card-bg: #1c1c1c;
-    --hover-bg: #1e2d45;
-    --text-color: white;
-    --subtext-color: #ccc;
+  :root{
+    --brand:#1753aa;
+    --bg:#07070a;
+    --panel:#0f1113;
+    --muted:#9aa6b2;
+    --card:#101418;
+    --accent:#23d0ff; /* subtle accent */
+    --glass: rgba(255,255,255,0.03);
   }
 
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+  *{box-sizing: border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(23,83,170,0.06), transparent 8%),
+                linear-gradient(180deg,#05060a 0%, var(--bg) 100%);
+    color:#eaf2ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.35;
   }
 
-  header {
-    background-color: #111;
-    padding: 15px 25px;
-    font-size: 24px;
-    color: var(--brand-color);
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  /* ---------- Header ---------- */
+  header.app-header{
+    position:sticky;
+    top:0;
+    z-index:30;
+    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(10,10,12,0.7), rgba(10,10,12,0.35));
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:14px 28px;
   }
 
-  #portalBtn {
-    background-color: var(--brand-color);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s;
+  .brand {
+    display:flex;
+    gap:12px;
+    align-items:center;
+    font-weight:800;
+    font-size:18px;
+    color:var(--brand);
+    letter-spacing:0.6px;
   }
 
-  #portalBtn:hover {
-    background-color: #0f3d82;
+  .brand-logo{
+    width:40px;height:40px;border-radius:8px;
+    background:linear-gradient(135deg,var(--brand), #0a2d6a);
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    color:#fff;box-shadow: 0 6px 18px rgba(23,83,170,0.16);
   }
 
-  #searchBar {
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
+  .header-actions{
+    margin-left:auto; display:flex; gap:12px; align-items:center;
   }
 
-  #searchInput {
-    padding: 10px;
-    width: 80%;
-    max-width: 500px;
-    background-color: #222;
-    color: white;
-    border: 2px solid var(--brand-color);
-    border-radius: 6px;
-    font-size: 16px;
+  .search {
+    display:flex; align-items:center; gap:8px;
+    background:var(--glass); border:1px solid rgba(255,255,255,0.04);
+    padding:8px 10px; border-radius:10px; min-width:280px;
+  }
+  .search input{
+    background:transparent; border:0; outline:0; color: #e9f4ff; width:100%;
+    font-size:14px;
   }
 
-  section {
-    padding: 30px 20px;
+  .btn {
+    display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+    background:var(--brand); color:white; border:0; padding:10px 14px;
+    border-radius:10px; font-weight:600; text-decoration:none;
+    box-shadow: 0 6px 22px rgba(23,83,170,0.14);
+  }
+  .btn.ghost {
+    background: transparent; border: 1px solid rgba(255,255,255,0.04); color:var(--muted); box-shadow:none;
   }
 
-  h2 {
-    color: var(--brand-color);
-    margin-bottom: 20px;
-    font-size: 28px;
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:48px 6vw;
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:28px;
+    align-items:center;
   }
 
-  .products-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+  .hero-left{
+    max-width:780px;
   }
 
-  .product-card {
-    background-color: var(--card-bg);
-    border-radius: 10px;
-    padding: 15px;
-    width: 240px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    transition: transform 0.2s, background-color 0.3s;
-    cursor: pointer;
-    text-align: center;
+  .eyebrow{
+    display:inline-block;
+    background: linear-gradient(90deg,var(--brand), #2aa0ff);
+    padding:6px 10px;border-radius:999px;color:#00112a;font-weight:700;font-size:13px;
+    box-shadow: 0 6px 18px rgba(23,83,170,0.08);
   }
 
-  .product-card:hover {
-    background-color: var(--hover-bg);
-    transform: translateY(-5px);
+  .hero h1{
+    font-size:44px; margin:16px 0 12px 0; letter-spacing:-0.6px; line-height:1.02;
+  }
+  .hero p.lead{ color:var(--muted); margin:0 0 18px 0; max-width:62ch; }
+
+  .hero-ctas{ display:flex; gap:12px; margin-top:12px; }
+
+  /* Hero right: preview card */
+  .hero-card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:14px; padding:18px; border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 20px 50px rgba(2,6,23,0.6);
+  }
+  .hero-card .small-title{ color:var(--muted); font-size:13px; margin-bottom:8px }
+  .preview-grid{ display:flex; gap:10px; flex-wrap:wrap; }
+  .small-card{ width:100px; height:100px; border-radius:8px; overflow:hidden; display:flex;flex-direction:column; justify-content:flex-end; padding:8px; color:white; background-size:cover; background-position:center; box-shadow: inset 0 -20px 30px rgba(0,0,0,0.4); font-size:13px; font-weight:700; }
+
+  /* ---------- Sections ---------- */
+  section.block{ padding:36px 6vw; }
+  section.block h2{ color:var(--brand); font-size:22px; margin:0 0 18px 0; }
+
+  /* Deals carousel (horizontal scroll) */
+  .deals-carousel{
+    display:flex; gap:18px; overflow-x:auto; padding-bottom:6px;
+    scroll-snap-type:x mandatory;
+  }
+  .deal-card{
+    scroll-snap-align:center; flex:0 0 360px; height:320px;
+    border-radius:12px; position:relative; overflow:hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
+    border:1px solid rgba(255,255,255,0.03);
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:18px;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .deal-card:hover{ transform: translateY(-8px); box-shadow: 0 28px 60px rgba(2,6,23,0.6) }
+
+  .deal-card .meta{ font-weight:700; font-size:18px }
+  .deal-card .price{ color:var(--muted); margin-top:6px; font-weight:600 }
+
+  .deal-card .bgimg{
+    position:absolute; inset:0; background-size:cover; background-position:center; filter:contrast(.9) saturate(1.1);
+    transform-origin:center; transition: transform .6s cubic-bezier(.2,.9,.2,1);
+  }
+  .deal-card:hover .bgimg{ transform: scale(1.06) rotate(-1deg); }
+
+  .deal-actions{ margin-top:12px; display:flex; gap:10px; align-items:center; }
+
+  /* New arrivals grid */
+  .grid {
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:18px;
+  }
+  .product-tile{
+    background:var(--card); border-radius:12px; padding:12px; min-height:200px;
+    border:1px solid rgba(255,255,255,0.02); transition: transform .2s ease, box-shadow .2s ease, opacity .4s;
+    display:flex; flex-direction:column; gap:10px; justify-content:space-between;
+  }
+  .product-tile:hover{ transform: translateY(-6px); box-shadow: 0 24px 48px rgba(2,6,23,0.6) }
+  .product-tile img{ width:100%; height:120px; object-fit:cover; border-radius:8px; }
+
+  /* CTA banner */
+  .cta-banner{
+    margin:24px 0; padding:22px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;
+    background: linear-gradient(90deg, rgba(23,83,170,0.08), rgba(35,208,255,0.02));
+    border:1px solid rgba(23,83,170,0.06);
   }
 
-  .product-card img {
-    max-width: 100%;
-    border-radius: 6px;
-    margin-bottom: 10px;
+  /* Footer */
+  footer{ padding:26px 6vw; color:var(--muted); font-size:13px; }
+
+  /* ---------- Cart overlay/slide panel ---------- */
+  .cart-toggle{
+    position:fixed; right:20px; bottom:22px; z-index:60; width:64px; height:64px;
+    border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px;
+    background:linear-gradient(180deg,var(--brand),#0b2a63); color:white; box-shadow: 0 12px 36px rgba(23,83,170,0.22);
+    border:0; cursor:pointer;
   }
 
-  .product-name {
-    font-size: 18px;
-    margin: 8px 0;
+  .cart-backdrop{
+    position:fixed; inset:0; z-index:55; display:none; align-items:flex-end; justify-content:flex-end;
   }
+  .cart-backdrop.active{ display:flex; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); }
 
-  .product-price {
-    color: var(--subtext-color);
-    margin-bottom: 10px;
+  .cart-panel{
+    width:380px; max-width:94vw; height:100%; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-left:1px solid rgba(255,255,255,0.03); padding:18px; overflow:auto;
+    transform: translateX(8%); transition: transform .28s ease;
   }
+  .cart-backdrop.active .cart-panel{ transform: translateX(0); }
 
-  /* Cart Styles */
-  #cartToggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: var(--brand-color);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 55px;
-    height: 55px;
-    font-size: 26px;
-    cursor: pointer;
-    z-index: 1000;
+  .cart-item{ display:flex; gap:12px; margin-bottom:12px; align-items:center; }
+  .cart-item .meta{ font-weight:700; font-size:14px }
+  .cart-item .qty{ width:64px; padding:8px; border-radius:8px; background:var(--glass); border:1px solid rgba(255,255,255,0.03); text-align:center; color:#eaf2ff }
+
+  .cart-footer{ position:sticky; bottom:0; background:linear-gradient(180deg, rgba(7,7,10,0), rgba(7,7,10,0.6)); padding-top:12px; margin-top:8px; }
+
+  .checkout-btn{ width:100%; padding:12px; border-radius:10px; border:0; background:var(--brand); color:white; font-weight:700; font-size:16px; }
+
+  /* toast */
+  .toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:100px; z-index:70; background: #0c1720; border-radius:10px; padding:12px 18px; color:#dff7ff; box-shadow: 0 14px 40px rgba(2,6,23,0.6); display:none; }
+
+  /* responsive */
+  @media (max-width:1000px){
+    .hero{ grid-template-columns: 1fr; padding:36px 5vw; gap:18px; }
+    .grid{ grid-template-columns: repeat(2,1fr) }
+    .deals-carousel{ gap:14px }
+    .deal-card{ flex:0 0 300px; height:300px }
   }
-
-  #cartPanel {
-    display: none;
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    background-color: #111;
-    border: 1px solid #333;
-    border-radius: 8px;
-    width: 320px;
-    max-height: 450px;
-    overflow-y: auto;
-    padding: 15px;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
-  }
-
-  .cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-
-  .cart-item input {
-    background-color: #222;
-    border: 1px solid #555;
-    color: white;
-    width: 50px;
-    text-align: center;
-    border-radius: 4px;
-  }
-
-  .cart-item button {
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  #checkoutBtn {
-    background-color: var(--brand-color);
-    color: white;
-    border: none;
-    padding: 12px;
-    width: 100%;
-    border-radius: 6px;
-    margin-top: 10px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-
-  #errorMessage {
-    color: #ff6961;
-    font-size: 14px;
-    margin-top: 10px;
-    white-space: pre-wrap;
-  }
-
-  @media (max-width: 600px) {
-    #cartPanel { width: 90%; right: 5%; }
-    #searchInput { width: 90%; }
-    .product-card { width: 90%; }
+  @media (max-width:600px){
+    header.app-header{ padding:12px 14px; gap:8px }
+    .search{ min-width:0; width:100% }
+    .grid{ grid-template-columns: 1fr }
+    .deal-card{ flex:0 0 88%; height:300px }
+    .brand-logo{ width:34px;height:34px }
+    .hero h1{ font-size:28px }
   }
 </style>
 </head>
 <body>
 
-<header>
-  RekietaLabs Market
-  <a id="portalBtn" href="/catalog.html" target="_self">Browse Catalog</a>
+<header class="app-header">
+  <div class="brand" onclick="location.href='/'" style="cursor:pointer">
+    <div class="brand-logo">RL</div>
+    RekietaLabs Market
+  </div>
+
+  <div class="search" title="Search products">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input id="globalSearch" placeholder="Search deals, new items, or SKU..." />
+  </div>
+
+  <div class="header-actions">
+    <a class="btn ghost" href="/catalog.html">Browse Catalog</a>
+    <button class="btn" id="shopColors" onclick="location.href='/filament-colors'">View Colors</button>
+    <button class="btn ghost" id="accountBtn" onclick="location.href='/account.html'">Account</button>
+  </div>
 </header>
 
-<div id="searchBar">
-  <input type="text" id="searchInput" placeholder="Search products..." />
-</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="eyebrow">TODAY'S DEALS</div>
+    <h1>Deals, specials & the newest RekietaLabs prints — shipped fast.</h1>
+    <p class="lead">Explore limited-time offers, hand-picked new items and featured sets. Everything made with precision — see details on each product page and add items to your cart instantly.</p>
 
-<section>
-  <h2>Deals & Specials</h2>
-  <div class="products-grid" id="dealsGrid"></div>
+    <div class="hero-ctas">
+      <a class="btn" href="/catalog.html">Shop Full Catalog</a>
+      <a class="btn ghost" href="/faq.html">How Shipping Works</a>
+    </div>
+
+    <div style="margin-top:22px; display:flex; gap:12px; align-items:center;">
+      <div style="font-size:13px; color:var(--muted)">Safe checkout • Fast support</div>
+      <div style="margin-left:8px; height:8px; width:8px; border-radius:50%; background:var(--brand);"></div>
+    </div>
+  </div>
+
+  <aside class="hero-card" aria-hidden="true">
+    <div class="small-title">Featured right now</div>
+    <div class="preview-grid" style="margin-top:10px">
+      <div class="small-card" style="background-image:url('https://market.rekietalabs.com/IMG_0937.jpeg')">Fidget Tree</div>
+      <div class="small-card" style="background-image:url('https://market.rekietalabs.com/IMG_0003-2.jpeg')">Flower Fidget</div>
+      <div class="small-card" style="background-image:url('https://market.rekietalabs.com/IMG_0202.png')">Pumpkin Dino</div>
+      <div class="small-card" style="background-image:url('https://market.rekietalabs.com/IMG_1171.jpeg')">Sting Ray</div>
+    </div>
+    <div style="margin-top:12px; font-size:13px; color:var(--muted)">Hover or tap any item to open its product page and view details.</div>
+  </aside>
 </section>
 
-<section>
-  <h2>New Items</h2>
-  <div class="products-grid" id="newItemsGrid"></div>
+<!-- DEALS (horizontal carousel) -->
+<section class="block" id="dealsSection">
+  <h2>Hot Deals</h2>
+  <div class="deals-carousel" id="dealsCarousel" role="list"></div>
 </section>
 
-<button id="cartToggle">🛒</button>
-<div id="cartPanel">
-  <div id="cartItems"></div>
-  <button id="checkoutBtn">Checkout</button>
-  <div id="errorMessage"></div>
+<!-- NEW ARRIVALS -->
+<section class="block" id="newSection">
+  <h2>New Arrivals</h2>
+  <div class="grid" id="newGrid" aria-live="polite"></div>
+
+  <div class="cta-banner" style="margin-top:20px">
+    <div>
+      <div style="font-weight:800; font-size:16px">Want everything? Browse the full catalog</div>
+      <div style="color:var(--muted); margin-top:6px">Quick filters, per-item pages and fast checkout.</div>
+    </div>
+    <div>
+      <a class="btn" href="/catalog.html">Open Catalog</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> RekietaLabs • By purchasing you agree to receive order & shipping emails.
+</footer>
+
+<!-- cart toggle + panel -->
+<button class="cart-toggle" id="cartToggle" aria-label="Open cart">🛒</button>
+
+<div class="cart-backdrop" id="cartBackdrop" aria-hidden="true">
+  <aside class="cart-panel" role="dialog" aria-labelledby="cartTitle">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
+      <div>
+        <div id="cartTitle" style="font-weight:800; font-size:16px">Your Cart</div>
+        <div style="color:var(--muted); font-size:13px">Items saved in local storage</div>
+      </div>
+      <div><button class="btn ghost" id="closeCart">Close</button></div>
+    </div>
+
+    <div id="cartContent" style="margin-top:12px"></div>
+
+    <div class="cart-footer" style="margin-top:8px">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+        <div style="color:var(--muted)">Subtotal</div>
+        <div id="subtotal" style="font-weight:800">$0.00</div>
+      </div>
+      <div style="color:var(--muted); font-size:13px; margin-bottom:8px">We will contact you for customizations after checkout.</div>
+      <button class="checkout-btn" id="checkoutBtn">Checkout</button>
+      <div id="cartError" style="color:#ffb3b3; margin-top:8px; font-size:13px"></div>
+    </div>
+  </aside>
 </div>
+
+<!-- toast -->
+<div class="toast" id="toast"></div>
 
 <script>
-const products = [
-  { id: "pumpkin-dino", name: "Pumpkin Dino", price: 3.00, image: "https://market.rekietalabs.com/IMG_0202.png", category: "deals", url: "/products/pumpkin-dino.html" },
-  { id: "sting-ray", name: "Sting Ray", price: 3.00, image: "https://market.rekietalabs.com/IMG_1171.jpeg", category: "deals", url: "/products/sting-ray.html" },
-  { id: "fidget-tree", name: "Fidget Tree", price: 8.00, image: "https://market.rekietalabs.com/IMG_0937.jpeg", category: "new", url: "/products/fidget-tree.html" },
-  { id: "flower-fidget-a", name: "Flower Fidget (GITD)", price: 8.00, image: "https://market.rekietalabs.com/IMG_0003-2.jpeg", category: "new", url: "/products/flower-fidget-a.html" },
+/* -------------------------
+   Data - edit products here
+   ------------------------- */
+const PRODUCTS = [
+  { id:"pumpkin-dino", name:"Pumpkin Dino", price:3.00, image:"https://market.rekietalabs.com/IMG_0202.png", tag:"deals", url:"/products/pumpkin-dino.html" },
+  { id:"sting-ray",   name:"Sting Ray 2-for-$3", price:3.00, image:"https://market.rekietalabs.com/IMG_1171.jpeg", tag:"deals", url:"/products/sting-ray.html" },
+  { id:"fidget-tree", name:"Fidget Tree", price:8.00, image:"https://market.rekietalabs.com/IMG_0937.jpeg", tag:"new", url:"/products/fidget-tree.html" },
+  { id:"flower-gitd", name:"Flower Fidget (GITD)", price:8.00, image:"https://market.rekietalabs.com/IMG_0003-2.jpeg", tag:"new", url:"/products/flower-fidget-a.html" },
+  // add more products as needed
 ];
 
-const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+/* -------------------------
+   Local cart utilities
+   ------------------------- */
+const CART_KEY = 'rekietalabs_cart_v1';
+let cart = JSON.parse(localStorage.getItem(CART_KEY) || '{}'); // { id: qty }
 
-const dealsGrid = document.getElementById('dealsGrid');
-const newItemsGrid = document.getElementById('newItemsGrid');
-const cartPanel = document.getElementById('cartPanel');
-const cartToggle = document.getElementById('cartToggle');
-const cartItems = document.getElementById('cartItems');
-const checkoutBtn = document.getElementById('checkoutBtn');
-const errorMessage = document.getElementById('errorMessage');
-const searchInput = document.getElementById('searchInput');
+function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); renderCart(); updateSubtotal(); }
 
-function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
+function addToCart(id, qty=1){
+  cart[id] = (cart[id] || 0) + Number(qty);
+  if(cart[id] > 99) cart[id] = 99;
+  saveCart();
+  showToast('Added to cart');
+}
 
-function renderProducts(grid, category) {
-  grid.innerHTML = '';
-  const query = searchInput.value.toLowerCase();
-  products.filter(p => p.category === category && p.name.toLowerCase().includes(query))
-          .forEach(product => {
-    const div = document.createElement('div');
-    div.className = 'product-card';
-    div.onclick = () => { window.location.href = product.url; };
-    div.innerHTML = `
-      <img src="${product.image}" alt="${product.name}" />
-      <div class="product-name">${product.name}</div>
-      <div class="product-price">$${product.price.toFixed(2)}</div>
+function setQty(id, qty){
+  qty = Math.max(1, Math.min(99, Number(qty) || 1));
+  cart[id] = qty;
+  saveCart();
+}
+
+function removeFromCart(id){
+  delete cart[id];
+  saveCart();
+}
+
+/* -------------------------
+   Render homepage sections
+   ------------------------- */
+const dealsCarousel = document.getElementById('dealsCarousel');
+const newGrid = document.getElementById('newGrid');
+
+function renderDeals(){
+  dealsCarousel.innerHTML = '';
+  const deals = PRODUCTS.filter(p=>p.tag==='deals');
+  deals.forEach(p=>{
+    const card = document.createElement('article');
+    card.className = 'deal-card';
+    card.innerHTML = `
+      <div class="bgimg" style="background-image:url('${p.image}')"></div>
+      <div style="position:relative; z-index:2">
+        <div class="meta">${escapeHtml(p.name)}</div>
+        <div class="price">$${p.price.toFixed(2)}</div>
+        <div class="deal-actions">
+          <a class="btn" href="${p.url}">View</a>
+          <button class="btn ghost" onclick="event.stopPropagation(); addToCart('${p.id}',1)">Add to cart</button>
+        </div>
+      </div>
     `;
-    grid.appendChild(div);
+    card.onclick = ()=>{ location.href = p.url; };
+    dealsCarousel.appendChild(card);
   });
 }
 
-function updateCart() {
-  cartItems.innerHTML = '';
-  for (const [id, qty] of Object.entries(cart)) {
-    const product = products.find(p => p.id === id);
-    if (!product) continue;
-    const div = document.createElement('div');
-    div.className = 'cart-item';
-    div.innerHTML = `
-      <span>${product.name}</span>
-      <input type="number" value="${qty}" min="1" max="30" onchange="cart['${id}']=parseInt(this.value)||1; saveCart(); updateCart();">
-      <button onclick="delete cart['${id}']; saveCart(); updateCart();">Remove</button>
+function renderNew(){
+  newGrid.innerHTML = '';
+  const news = PRODUCTS.filter(p=>p.tag==='new');
+  news.forEach(p=>{
+    const el = document.createElement('div');
+    el.className = 'product-tile';
+    el.innerHTML = `
+      <img src="${p.image}" alt="${escapeHtml(p.name)}" />
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="font-weight:700">${escapeHtml(p.name)}</div>
+          <div style="color:var(--muted); font-size:13px">$${p.price.toFixed(2)}</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <a class="btn" href="${p.url}" style="padding:8px 10px; font-size:14px">Details</a>
+          <button class="btn ghost" onclick="event.stopPropagation(); addToCart('${p.id}',1)">Add</button>
+        </div>
+      </div>
     `;
-    cartItems.appendChild(div);
-  }
+    el.querySelector('img').addEventListener('click', ()=>location.href=p.url);
+    newGrid.appendChild(el);
+  });
 }
 
-cartToggle.onclick = () => {
-  cartPanel.style.display = cartPanel.style.display === 'block' ? 'none' : 'block';
-  updateCart();
-  errorMessage.textContent = '';
-};
+/* -------------------------
+   Cart UI
+   ------------------------- */
+const cartToggle = document.getElementById('cartToggle');
+const cartBackdrop = document.getElementById('cartBackdrop');
+const closeCart = document.getElementById('closeCart');
+const cartContent = document.getElementById('cartContent');
+const subtotalEl = document.getElementById('subtotal');
+const cartError = document.getElementById('cartError');
 
-checkoutBtn.onclick = async () => {
-  errorMessage.textContent = '';
-  const cartArray = Object.entries(cart).map(([id, qty]) => ({ id, qty }));
-  if (cartArray.length === 0) return errorMessage.textContent = "Your cart is empty (Ref ID: 3400116)";
-  try {
-    const res = await fetch("https://api.rekietalabs.com/market-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cart: cartArray })
+cartToggle.addEventListener('click', ()=> openCart());
+closeCart.addEventListener('click', ()=> closeCartPanel());
+cartBackdrop.addEventListener('click', (e)=>{ if(e.target === cartBackdrop) closeCartPanel(); });
+
+function openCart(){
+  cartBackdrop.classList.add('active');
+  renderCart();
+  cartBackdrop.setAttribute('aria-hidden','false');
+}
+function closeCartPanel(){
+  cartBackdrop.classList.remove('active');
+  cartBackdrop.setAttribute('aria-hidden','true');
+}
+
+function renderCart(){
+  cartContent.innerHTML = '';
+  const entries = Object.entries(cart);
+  if(entries.length === 0){
+    cartContent.innerHTML = '<div style="color:var(--muted); padding:18px">Your cart is empty.</div>';
+    subtotalEl.textContent = '$0.00';
+    return;
+  }
+
+  entries.forEach(([id, qty])=>{
+    const p = PRODUCTS.find(x=>x.id===id);
+    if(!p) return;
+    const node = document.createElement('div');
+    node.className = 'cart-item';
+    node.innerHTML = `
+      <div style="flex:1">
+        <div class="meta">${escapeHtml(p.name)}</div>
+        <div style="color:var(--muted); font-size:13px">$${p.price.toFixed(2)} each</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-end">
+        <input class="qty" type="number" min="1" max="99" value="${qty}" data-id="${p.id}">
+        <button class="btn ghost remove" data-id="${p.id}" style="padding:6px 8px; font-size:13px">Remove</button>
+      </div>
+    `;
+    cartContent.appendChild(node);
+  });
+
+  // wire up qty inputs & remove buttons
+  cartContent.querySelectorAll('.qty').forEach(inp=>{
+    inp.addEventListener('change', (e)=>{
+      const id = e.target.dataset.id;
+      setQty(id, e.target.value);
+    });
+  });
+  cartContent.querySelectorAll('.remove').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      const id = e.target.dataset.id;
+      removeFromCart(id);
+    });
+  });
+
+  updateSubtotal();
+}
+
+function updateSubtotal(){
+  let total = 0;
+  for(const [id, qty] of Object.entries(cart)){
+    const p = PRODUCTS.find(x=>x.id===id);
+    if(!p) continue;
+    total += p.price * Number(qty);
+  }
+  subtotalEl.textContent = '$' + total.toFixed(2);
+}
+
+/* -------------------------
+   Checkout (API call)
+   Uses your API endpoint configured in system context
+   ------------------------- */
+const CHECKOUT_URL = "https://api.rekietalabs.com/functions/market-session.js"; // user's endpoint
+
+document.getElementById('checkoutBtn').addEventListener('click', async ()=>{
+  cartError.textContent = '';
+  const items = Object.entries(cart).map(([id, qty]) => ({ id, qty }));
+  if(items.length === 0){ cartError.textContent = "Your cart is empty. (Ref ID: 3400116)"; return; }
+
+  try{
+    // show lightweight loading state
+    const btn = document.getElementById('checkoutBtn');
+    btn.disabled = true; btn.textContent = 'Processing...';
+    const res = await fetch(CHECKOUT_URL, {
+      method:'POST',
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({ cart: items })
     });
     const data = await res.json();
-    if (res.ok && data.url) window.location.href = data.url;
-    else errorMessage.textContent = (data.error || "Checkout failed") + " (Ref ID: " + (data.refId || "3400126") + ")";
-  } catch(e) {
-    errorMessage.textContent = "Network error. Please try again later (Ref ID: 3400136)";
+    if(res.ok && data.url){
+      // clear cart and redirect
+      localStorage.removeItem(CART_KEY);
+      cart = {};
+      saveCart();
+      window.location.href = data.url;
+    } else {
+      cartError.textContent = (data.error || 'Checkout failed.') + " (Ref ID: " + (data.refId || "3400126") + ")";
+    }
+  } catch(err){
+    cartError.textContent = "Network error. Please try again later. (Ref ID: 3400136)";
+  } finally {
+    const btn = document.getElementById('checkoutBtn');
+    btn.disabled = false; btn.textContent = 'Checkout';
   }
-};
-
-searchInput.addEventListener('input', () => {
-  renderProducts(dealsGrid, 'deals');
-  renderProducts(newItemsGrid, 'new');
 });
 
-window.addEventListener('load', () => {
-  renderProducts(dealsGrid, 'deals');
-  renderProducts(newItemsGrid, 'new');
+/* -------------------------
+   search & small UX
+   ------------------------- */
+const searchInput = document.getElementById('globalSearch');
+searchInput.addEventListener('input', (e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  // filter deals and new grid quickly by name
+  document.querySelectorAll('.deal-card').forEach(card=>{
+    const txt = card.querySelector('.meta').textContent.toLowerCase();
+    card.style.display = txt.includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.product-tile').forEach(tile=>{
+    const txt = tile.querySelector('div > div').textContent.toLowerCase();
+    tile.style.display = txt.includes(q) ? '' : 'none';
+  });
+});
+
+/* -------------------------
+   toast helper
+   ------------------------- */
+const toastEl = document.getElementById('toast');
+let toastTimer = null;
+function showToast(msg, ms=1600){
+  toastEl.textContent = msg;
+  toastEl.style.display = 'block';
+  toastTimer && clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ toastEl.style.display = 'none'; }, ms);
+}
+
+/* -------------------------
+   small helpers
+   ------------------------- */
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, (m)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+function showToast(msg){ showToast.__inner ? showToast.__inner(msg) : (()=>{ /* fallback */ alert(msg) })(); }
+showToast.__inner = function(m){ const t = document.getElementById('toast'); t.textContent = m; t.style.display = 'block'; setTimeout(()=>t.style.display='none',1400); };
+
+/* -------------------------
+   initial render
+   ------------------------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+renderDeals();
+renderNew();
+renderCart();
+updateSubtotal();
+
+/* -------------------------
+   nice entrance animations using IntersectionObserver
+   ------------------------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(ent=>{
+    if(ent.isIntersecting){
+      ent.target.style.opacity = 1;
+      ent.target.style.transform = 'translateY(0)';
+      io.unobserve(ent.target);
+    }
+  });
+}, {threshold: 0.08});
+
+document.querySelectorAll('.product-tile').forEach(el=>{
+  el.style.opacity=0; el.style.transform='translateY(12px)'; io.observe(el);
+});
+document.querySelectorAll('.deal-card').forEach(el=>{
+  el.style.opacity=0; el.style.transform='translateY(12px)'; io.observe(el);
+});
+
+/* Enable keyboard shortcut 'c' to open cart (power-user) */
+document.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='c') openCart(); });
+
+/* Expose addToCart in global scope for inline onclicks */
+window.addToCart = function(id, qty=1){ addToCart(id, qty); showToast('Added to cart'); };
+
+/* make sure any cart changes from other pages are noticed (storage event) */
+window.addEventListener('storage', (e)=>{
+  if(e.key === CART_KEY) { cart = JSON.parse(e.newValue || '{}'); renderCart(); updateSubtotal(); }
 });
 </script>
-
 </body>
 </html>
