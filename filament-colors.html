@@ -15,6 +15,9 @@
   --muted: #9aa3af;
   --brand: #1753aa;
   --tag-green: #2ecc71;
+  --tag-red: #e74c3c;
+  --tag-yellow: #f1c40f;
+  --tag-orange: #f39c12;
   --glass: rgba(255,255,255,0.03);
   --card-radius: 14px;
 }
@@ -136,6 +139,9 @@ h1{
 }
 
 .tag.in-stock{background:linear-gradient(90deg,var(--tag-green),#1fbf4f); color:#04260f;}
+.tag.out-stock{background:linear-gradient(90deg,var(--tag-red),#c0392b); color:#fff;}
+.tag.running-low{background:linear-gradient(90deg,var(--tag-yellow),#f39c12); color:#05220a;}
+.tag.restocking-soon{background:linear-gradient(90deg,var(--tag-orange),#e67e22); color:#05220a;}
 
 .upcharge{font-size:12px;color:var(--muted);font-weight:600;margin-left:6px}
 .row{display:flex;align-items:center;gap:12px}
@@ -228,7 +234,7 @@ h1{
   <div class="meta">
     <div class="row">
       <div class="name"><span class="gtext">Purple-Pink Gradient</span></div>
-      <div class="tag in-stock">In-Stock</div>
+      <div class="tag out-stock">Out Of Stock</div>
     </div>
     <div class="hint">Smooth blend for decorative models.</div>
   </div>
@@ -329,7 +335,7 @@ h1{
     <div class="hint">Vibrant red tones for impact.</div>
   </div>
 </article>
-
+  
 </section>
 </main>
 </body>
