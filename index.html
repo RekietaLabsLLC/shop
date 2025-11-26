@@ -203,9 +203,30 @@
           a.appendChild(r);
       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
+<script>
+  window.addEventListener("load", () => {
+    const endDate = new Date("2025-12-02T00:00:00");
+    const now = new Date();
+
+    const bar = document.getElementById("announcementBar");
+    if (now >= endDate && bar) {
+      bar.style.display = "none";
+    }
+  });
+</script>
 </head>
 <body>
-
+<!-- Announcement Bar -->
+<div id="announcementBar" style="
+  background-color: #1753aa;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+">
+  Black Friday Sale! Use code: BLKFRI2025 for 25% off your order. Offer valid through December 2, 2025 at 12:00 AM.
+</div>
   <header>
     RekietaLabs Market
     <a id="portalBtn" href="/filament-colors" target="_blank">View Avaible Colors</a>
