@@ -1,55 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Terms of Service – RekietaLabs Market</title>
   <link rel="icon" href="IMG_0926.jpeg" type="image/jpeg" />
   <style>
+    :root {
+      --brand: #1753aa;
+      --background: #000000;
+      --text: #ffffff;
+      --card-bg: #0f0f0f;
+      --border: rgba(23, 83, 170, 0.4);
+    }
+
     body {
-      background-color: #000;
-      color: #fff;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background);
+      color: var(--text);
       font-family: Arial, sans-serif;
-      padding: 2rem;
-      line-height: 1.6;
+      line-height: 1.7;
     }
-    h1, h2 {
-      color: #1753aa;
+
+    .container {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 2.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
     }
+
+    h1 {
+      color: var(--brand);
+      font-size: 2.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    h2 {
+      color: var(--brand);
+      margin-top: 2rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.6rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
     a {
-      color: #1753aa;
+      color: var(--brand);
       text-decoration: none;
     }
+
     a:hover {
       text-decoration: underline;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    .toc {
+      background: rgba(23, 83, 170, 0.08);
+      border: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+
+    .toc a {
+      display: block;
+      padding: 4px 0;
     }
   </style>
 </head>
 <body>
-  <h1>Terms of Service</h1>
-  <p>Welcome to RekietaLabs Market. By using our website, you agree to the following terms and conditions.</p>
+  <div class="container">
+    <h1>Terms of Service</h1>
 
-  <h2>1. Use of the Site</h2>
-  <p>You agree to use the site lawfully and not engage in any activity that could harm the platform or other users.</p>
+    <div class="toc">
+      <strong>Table of Contents</strong>
+      <a href="#use">1. Use of the Site</a>
+      <a href="#orders">2. Orders & Payments</a>
+      <a href="#contact-permission">3. Permission to Contact You</a>
+      <a href="#photos">4. Product Photo & Color Disclaimer</a>
+      <a href="#shipping">5. Shipping & Returns</a>
+      <a href="#ip">7. Intellectual Property & Branding Disclaimer</a>
+      <a href="#liability">8. Limitation of Liability</a>
+      <a href="#law">9. Governing Law</a>
+      <a href="#contact">10. Contact</a>
+    </div>
 
-  <h2>2. Orders & Payment</h2>
-  <p>All payments are securely processed through Stripe. Orders are not finalized until payment is confirmed.</p>
+    <p>By accessing or using RekietaLabs Market, you agree to the terms set forth below. Please read them carefully.</p>
 
-  <h2>3. Shipping & Returns</h2>
-  <p>Orders are shipped within the stated time on the product page. Due to the custom nature of our 3D prints, returns are not accepted unless the item is damaged or incorrect. Contact us within 7 days of delivery to resolve any issues.</p>
+    <h2 id="use">1. Use of the Site</h2>
+    <p>You agree to use this website responsibly and in accordance with all applicable laws. You may not attempt to damage, disrupt, or misuse the platform or its services in any way.</p>
 
-  <h2>4. User Accounts</h2>
-  <p>You may optionally create an account to view order history. Keep your credentials secure. RekietaLabs is not responsible for unauthorized access due to user negligence.</p>
+    <h2 id="orders">2. Orders & Payments</h2>
+    <p>All payments are securely processed through Stripe. An order is not considered confirmed until payment successfully completes.</p>
 
-  <h2>5. Intellectual Property</h2>
-  <p>All site content, including logos, product designs, and branding, is the property of RekietaLabs and may not be used without permission.</p>
+    <h2 id="contact-permission">3. Permission to Contact You</h2>
+    <p>By purchasing any product from RekietaLabs Market, you authorize us to contact you regarding your order. This may include:</p>
+    <ul>
+      <li>Customization clarifications</li>
+      <li>Order confirmation</li>
+      <li>Progress updates</li>
+      <li>Shipping and delivery notifications</li>
+    </ul>
+    <p>Communications will be sent to the email address provided at checkout.</p>
 
-  <h2>6. Limitation of Liability</h2>
-  <p>We are not liable for any indirect or consequential damages related to the use of our site or products.</p>
+    <h2 id="photos">4. Product Photo & Color Disclaimer</h2>
+    <p>Product photos are for visualization purposes only. The colors shown may not match the exact color options available.</p>
+    <p>Please confirm color availability before placing an order.</p>
 
-  <h2>7. Governing Law</h2>
-  <p>These terms are governed by the laws of the United States and the state in which RekietaLabs operates.</p>
+    <h2 id="shipping">5. Shipping & Returns</h2>
+    <p>Orders are typically shipped within the timeframe listed on each product page. Because our products are made-to-order and often customized, returns are not accepted unless:</p>
+    <ul>
+      <li>The item arrives damaged</li>
+      <li>The item is incorrect based on the order details</li>
+    </ul>
+    <p>If an issue occurs, contact us within 7 days of delivery so we can resolve the problem.</p>
 
-  <h2>8. Contact</h2>
-  <p>If you have questions, email us at <a href="mailto:support@rekietalabs.com">support@rekietalabs.com</a>.</p>
+    <h2 id="ip">7. Intellectual Property & Branding Disclaimer</h2>
+    <p>RekietaLabs is <strong>not</strong> a registered business or legal entity. Any branding, names, logos, or copyright-style elements displayed on the site are used strictly for stylistic and identity purposes.</p>
+    <p>They do <strong>not</strong> represent legally enforceable copyrights, trademarks, or proprietary restrictions.</p>
+
+    <h2 id="liability">8. Limitation of Liability</h2>
+    <p>RekietaLabs is not responsible for indirect, incidental, or consequential damages arising from the use of our website or products.</p>
+
+    <h2 id="law">9. Governing Law</h2>
+    <p>These Terms of Service are governed by the laws of the United States and the state in which RekietaLabs operates.</p>
+
+    <h2 id="contact">10. Contact</h2>
+    <p>If you have questions about these terms, email us at <a href="mailto:support@rekietalabs.com">support@rekietalabs.com</a>. Last Updated: 12/2/2025</p>
+
+    <footer>© RekietaLabs Market – Branding is stylistic only</footer>
+  </div>
 </body>
 </html>
